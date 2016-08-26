@@ -25,6 +25,12 @@ func ReadZipToFile(zipReader *zip.ReadCloser, wordFile *File) error {
                 case "[Content_Types].xml": {
                     err = readContentTypesToFile(v, wordFile)
                 }                
+                case "docProps/core.xml": {
+                    err = readCorePropertiesToFile(v, wordFile)
+                }
+                case "docProps/app.xml": {
+                    err = readAppPropertiesToFile(v, wordFile)
+                }
             }
         }
         if err != nil {
@@ -43,6 +49,36 @@ func readContentTypesToFile(zipFile *zip.File, wordFile *File)  error {
     }
     decoder := xml.NewDecoder(rc)
     err = decoder.Decode(wordFile.ContentTypes)
+    if err != nil {
+        return err
+    }
+    return nil
+}
+
+// Чтение параметров Core
+func readCorePropertiesToFile(zipFile *zip.File, wordFile *File)  error {
+    wordFile.CoreProperties = new(CoreProperties)
+    rc, err := zipFile.Open()
+    if err != nil {
+        return err
+    }
+    decoder := xml.NewDecoder(rc)
+    err = decoder.Decode(wordFile.CoreProperties)
+    if err != nil {
+        return err
+    }
+    return nil
+}
+
+// Чтение параметров App
+func readAppPropertiesToFile(zipFile *zip.File, wordFile *File)  error {
+    wordFile.AppProperties = new(AppProperties)
+    rc, err := zipFile.Open()
+    if err != nil {
+        return err
+    }
+    decoder := xml.NewDecoder(rc)
+    err = decoder.Decode(wordFile.AppProperties)
     if err != nil {
         return err
     }

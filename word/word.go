@@ -6,7 +6,9 @@ import (
 
 // File - Файл Word
 type File struct {
-    ContentTypes *ContentTypes
+    ContentTypes   *ContentTypes
+    CoreProperties *CoreProperties
+    AppProperties  *AppProperties
 }
 
 // Open (File) - открыть файл
@@ -14,7 +16,7 @@ func (f *File) Open(fileName string) error {
 	z, err := zip.OpenReader(fileName)
 	if err != nil {
 		return err
-	}
+	}                
     err = ReadZipToFile(z, f)    
     if err == nil {
         // Коррекции после удачной загрузки
@@ -28,5 +30,11 @@ func (f *File) correctionTest() {
     // Станадартные типы по умолчанию
     if f.ContentTypes == nil {
         f.ContentTypes = MakeDefaultContentTypes()
+    }
+    if f.CoreProperties == nil {
+        f.CoreProperties = MakeDefaultCoreProperties()
+    }
+    if f.AppProperties == nil {
+        f.AppProperties = MakeDefaultAppProperties()
     }
 }

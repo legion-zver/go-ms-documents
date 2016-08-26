@@ -7,8 +7,8 @@ import (
 // ContentTypes - [ContentTypes].xml
 type ContentTypes struct {
     XMLName     xml.Name        `xml:"http://schemas.openxmlformats.org/package/2006/content-types Types"`
-    Defaults    []Default       `xml:"Override"`
-    Overrides   []Override      `xml:"Default"`
+    Defaults    []Default       `xml:"Default"`
+    Overrides   []Override      `xml:"Override"`
 }
 
 // Override - CT Override
@@ -72,6 +72,6 @@ func MakeDefaultContentTypes() *ContentTypes {
     types.Overrides[7].ContentType  = "application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"
     types.Overrides[8].PartName     = "/word/theme/theme1.xml"
     types.Overrides[8].ContentType  = "application/vnd.openxmlformats-officedocument.theme+xml"
-    
+
     return types;
 }
