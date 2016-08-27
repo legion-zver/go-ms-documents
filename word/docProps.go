@@ -6,13 +6,12 @@ import (
 )
 
 // CoreProperties - Document properties
-type CoreProperties struct {            
-    XMLName            xml.Name    `xml:"coreProperties"`
-    XMLNsCP            string      `xml:"xmlns:cp,attr"`
-    XMLNsDC            string      `xml:"xmlns:dc,attr"`
-    XMLNsDCT           string      `xml:"xmlns:dcterms,attr"`
-    XMLNsDCM           string      `xml:"xmlns:dcmitype,attr,omitempty"`    
-    XMLNsXSI           string      `xml:"xmlns:xsi,attr"`    
+type CoreProperties struct {                
+    XMLName            xml.Name    `xml:"http://schemas.openxmlformats.org/package/2006/metadata/core-properties coreProperties"`    
+    XMLNsDC            string      `xml:"dc,attr"`
+    XMLNsDCT           string      `xml:"dcterms,attr"`
+    XMLNsDCM           string      `xml:"dcmitype,attr,omitempty"`    
+    XMLNsXSI           string      `xml:"xsi,attr"`    
     Creator            string      `xml:"dc:creator,omitempty"`
     LastModifiedBy     string      `xml:"cp:lastModifiedBy,omitempty"`
     Revision           int         `xml:"cp:revision,omitempty"`
@@ -47,7 +46,7 @@ type AppProperties struct {
 
 // MakeDefaultCoreProperties - create default core properties
 func MakeDefaultCoreProperties() *CoreProperties {
-    props := new(CoreProperties)    
+    props := new(CoreProperties)        
     props.XMLNsDC  = "http://purl.org/dc/elements/1.1/"
     props.XMLNsDCT = "http://purl.org/dc/terms/"    
     props.XMLNsXSI = "http://www.w3.org/2001/XMLSchema-instance"

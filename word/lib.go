@@ -23,13 +23,24 @@ func ReadZipToFile(zipReader *zip.ReadCloser, wordFile *File) error {
             fmt.Println("File in zip: ", v.Name)
             switch v.Name {
                 case "[Content_Types].xml": {
-                    err = readContentTypesToFile(v, wordFile)
+                    wordFile.ContentTypes = new(ContentTypes)
+                    err = readXMLFromZipFile(v, wordFile.ContentTypes)
                 }                
                 case "docProps/core.xml": {
-                    err = readCorePropertiesToFile(v, wordFile)
+                    wordFile.CoreProperties = new(CoreProperties)
+                    err = readXMLFromZipFile(v, wordFile.CoreProperties)
                 }
                 case "docProps/app.xml": {
-                    err = readAppPropertiesToFile(v, wordFile)
+                    wordFile.AppProperties = new(AppProperties)
+                    err = readXMLFromZipFile(v, wordFile.AppProperties)
+                }
+                case "word/fontTable.xml": {
+                    wordFile.FontTable = new(FontTable)
+                    err = readXMLFromZipFile(v, wordFile.FontTable)
+                }
+                case "word/settings.xml": {
+                    wordFile.Settings = new(Settings)
+                    err = readXMLFromZipFile(v, wordFile.Settings)
                 }
             }
         }
@@ -40,45 +51,14 @@ func ReadZipToFile(zipReader *zip.ReadCloser, wordFile *File) error {
     return nil
 }
 
-// Чтение контент типов в документе
-func readContentTypesToFile(zipFile *zip.File, wordFile *File)  error {
-    wordFile.ContentTypes = new(ContentTypes)
+// readXMLFromZipFile 
+func readXMLFromZipFile(zipFile *zip.File, out interface{}) error {
     rc, err := zipFile.Open()
     if err != nil {
         return err
     }
     decoder := xml.NewDecoder(rc)
-    err = decoder.Decode(wordFile.ContentTypes)
-    if err != nil {
-        return err
-    }
-    return nil
-}
-
-// Чтение параметров Core
-func readCorePropertiesToFile(zipFile *zip.File, wordFile *File)  error {
-    wordFile.CoreProperties = new(CoreProperties)
-    rc, err := zipFile.Open()
-    if err != nil {
-        return err
-    }
-    decoder := xml.NewDecoder(rc)
-    err = decoder.Decode(wordFile.CoreProperties)
-    if err != nil {
-        return err
-    }
-    return nil
-}
-
-// Чтение параметров App
-func readAppPropertiesToFile(zipFile *zip.File, wordFile *File)  error {
-    wordFile.AppProperties = new(AppProperties)
-    rc, err := zipFile.Open()
-    if err != nil {
-        return err
-    }
-    decoder := xml.NewDecoder(rc)
-    err = decoder.Decode(wordFile.AppProperties)
+    err = decoder.Decode(out)
     if err != nil {
         return err
     }

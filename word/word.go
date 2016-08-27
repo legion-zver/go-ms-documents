@@ -9,6 +9,8 @@ type File struct {
     ContentTypes   *ContentTypes
     CoreProperties *CoreProperties
     AppProperties  *AppProperties
+    FontTable      *FontTable
+    Settings       *Settings
 }
 
 // Open (File) - открыть файл
@@ -16,7 +18,7 @@ func (f *File) Open(fileName string) error {
 	z, err := zip.OpenReader(fileName)
 	if err != nil {
 		return err
-	}                
+	}                    
     err = ReadZipToFile(z, f)    
     if err == nil {
         // Коррекции после удачной загрузки
