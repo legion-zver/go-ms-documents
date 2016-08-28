@@ -11,6 +11,7 @@ type File struct {
     AppProperties  *AppProperties
     FontTable      *FontTable
     Settings       *Settings
+    Styles         *Styles
 }
 
 // Open (File) - открыть файл

@@ -42,6 +42,10 @@ func ReadZipToFile(zipReader *zip.ReadCloser, wordFile *File) error {
                     wordFile.Settings = new(Settings)
                     err = readXMLFromZipFile(v, wordFile.Settings)
                 }
+                case "word/styles.xml": {
+                    wordFile.Styles = new(Styles)
+                    err = readXMLFromZipFile(v, wordFile.Styles)
+                }
             }
         }
         if err != nil {
